@@ -1,0 +1,37 @@
+{
+  "realm": "ministere",
+  "enabled": true,
+  "displayName": "Portail Ministériel",
+  "sslRequired": "external",
+  "registrationAllowed": false,
+  "resetPasswordAllowed": true,
+  "rememberMe": false,
+  "bruteForceProtected": true,
+  "permanentLockout": false,
+  "failureFactor": 5,
+  "passwordPolicy": "length(12) and upperCase(1) and lowerCase(1) and digits(1) and specialChars(1) and notUsername",
+  "roles": {
+    "realm": [
+      { "name": "AGENT", "description": "Utilisateur final du portail" },
+      { "name": "GESTIONNAIRE_HABILITATIONS", "description": "Gère les accès applicatifs" },
+      { "name": "ADMIN_PORTAIL", "description": "Administre le portail" }
+    ]
+  },
+  "clients": [
+    {
+      "clientId": "portail-bff",
+      "name": "Portail BFF",
+      "enabled": true,
+      "publicClient": false,
+      "standardFlowEnabled": true,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": false,
+      "redirectUris": ["http://localhost:8080/login/oauth2/code/keycloak"],
+      "webOrigins": ["http://localhost:8080"],
+      "attributes": {
+        "pkce.code.challenge.method": "S256",
+        "post.logout.redirect.uris": "http://localhost:8080/*"
+      }
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+# Java / Maven
+target/
+!.mvn/wrapper/maven-wrapper.jar
+*.class
+*.jar
+*.war
+
+# Node / Angular
+node_modules/
+dist/
+.angular/
+npm-debug.log*
+yarn-error.log*
+
+# IDE
+.idea/
+*.iml
+.vscode/
+.settings/
+.project
+.classpath
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Environnement / secrets
+.env
+.env.*
+!.env.example
+*.local
+application-local.yml
+application-local.properties
+secrets/
+
+# Logs
+*.log
+logs/
+
+# Keycloak
+infra/keycloak/data/
