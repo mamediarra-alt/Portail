@@ -1,0 +1,27 @@
+# Profil dev : BFF sans Keycloak. À NE PAS utiliser en production.
+# Port 8085 en dev (8080 est souvent pris, ex. application EDUSN).
+server:
+  port: ${PORTAIL_BFF_PORT:8085}
+
+spring:
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.security.oauth2.client.reactive.ReactiveOAuth2ClientAutoConfiguration
+  cloud:
+    gateway:
+      server:
+        webflux:
+          # Sans client OAuth2, le filtre TokenRelay n'existe pas : on l'enlève.
+          default-filters:
+            - DedupeResponseHeader=Vary Access-Control-Allow-Origin Access-Control-Allow-Credentials
+          routes:
+            - id: portail-api
+              uri: ${PORTAIL_API_URI:http://localhost:8082}
+              predicates:
+                - Path=/api/**
+              filters:
+                - RemoveRequestHeader=Cookie
+
+logging:
+  level:
+    org.springframework.security: INFO

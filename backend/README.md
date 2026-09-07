@@ -1,22 +1,28 @@
-# Backend — Portail Ministériel
+# Backend — Portail Applicatif du Ministère
 
-À générer après validation du cahier des charges et du modèle du domaine.
+Projet Maven multi-modules. Java 17, Spring Boot 3.5.5.
 
-## Modules prévus
+## Modules
 
-| Module | Rôle | Dépendances clés |
+| Module | Rôle | État |
 |---|---|---|
-| `gateway` | API Gateway / BFF | `spring-cloud-starter-gateway`, `spring-boot-starter-oauth2-client`, `spring-session` |
-| `portail-api` | API métier du portail | `spring-boot-starter-web`, `spring-boot-starter-oauth2-resource-server`, `spring-boot-starter-data-jpa`, `flyway`, `postgresql` |
-| `common` | DTO, exceptions, sécurité partagée | — |
+| `portail-api` | API métier du portail : catalogue, contrôle d'accès, audit, administration. OAuth2 Resource Server (JWT Keycloak). Port 8082. | **implémenté** (compile + tests OK) |
+| `portail-bff` | Passerelle / BFF (Spring Cloud Gateway) : session navigateur, cookie `httpOnly`, CSRF, en-têtes, OAuth2 Login, `TokenRelay` vers `portail-api`. Port 8080. | **implémenté** (compile OK) |
 
-## Génération (à faire)
+## Démarrage rapide
 
-Projet Maven multi-modules, Java 21, Spring Boot 3.x. Le wrapper `mvnw` sera
-inclus (pas besoin de Maven global).
+```bash
+export JAVA_HOME="/c/Program Files/Java/jdk-17"
+mvn test                              # 6 tests unitaires
+mvn spring-boot:run -pl portail-api   # nécessite MySQL portail_db accessible
+```
+
+Détails, endpoints, configuration et sécurité : [../docs/09-backend.md](../docs/09-backend.md).
 
 ## Conventions
 
-- Migrations SQL versionnées (Flyway) dans `portail-api/src/main/resources/db/migration`.
-- Contrats REST documentés en OpenAPI.
-- Profil `local` non commité (`application-local.yml` ignoré par Git).
+- Schéma géré par **Flyway** (`portail-api/src/main/resources/db/migration`) ;
+  `spring.jpa.hibernate.ddl-auto=validate`.
+- Contrats REST exposés en OpenAPI (`/swagger-ui.html`).
+- Secrets par variables d'environnement ; `application-local.yml` ignoré par Git.
+- Aucune logique métier d'EDUSN ou du Restaurant dans ce backend.

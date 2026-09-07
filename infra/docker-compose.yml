@@ -1,6 +1,8 @@
-# Socle local : Keycloak + PostgreSQL
+# Socle local : Keycloak (+ sa base PostgreSQL) + base MySQL du portail
 # Usage : docker compose -f infra/docker-compose.yml up -d
 # NB : Docker Desktop doit être installé sur le poste.
+#     Alternative sans Docker : MySQL Server local + MySQL Workbench, puis
+#     exécuter infra/db/portail_db.sql (voir docs/08-base-de-donnees.md).
 
 services:
   postgres-keycloak:
@@ -20,22 +22,29 @@ services:
       timeout: 5s
       retries: 5
 
-  postgres-portail:
-    image: postgres:16-alpine
-    container_name: portail-postgres-app
+  mysql-portail:
+    image: mysql:8.4
+    container_name: portail-mysql-app
     environment:
-      POSTGRES_DB: portail
-      POSTGRES_USER: portail
-      POSTGRES_PASSWORD: change-me-local
+      MYSQL_DATABASE: portail_db
+      MYSQL_USER: portail_app
+      MYSQL_PASSWORD: change-me-local
+      MYSQL_ROOT_PASSWORD: change-me-local-root
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_0900_ai_ci
     volumes:
-      - portail-db:/var/lib/postgresql/data
+      - portail-db:/var/lib/mysql
+      # Scripts joués au premier démarrage (ordre alphabétique) :
+      - ./db/portail_db.sql:/docker-entrypoint-initdb.d/01-portail_db.sql:ro
+      - ./db/donnees-demo.sql:/docker-entrypoint-initdb.d/02-donnees-demo.sql:ro
     ports:
-      - "5432:5432"
+      - "3306:3306"
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U portail"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-p$$MYSQL_ROOT_PASSWORD"]
       interval: 10s
       timeout: 5s
-      retries: 5
+      retries: 10
 
   keycloak:
     image: quay.io/keycloak/keycloak:26.0

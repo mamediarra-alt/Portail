@@ -31,7 +31,7 @@ Statut : **proposition initiale** (à affiner après le cahier des charges).
              │                        │                        │
              ▼                        ▼                        ▼
    ┌────────────────────┐   ┌────────────────────────────────────────────┐
-   │  PostgreSQL        │   │           Keycloak (realm « ministere »)   │
+   │  MySQL portail_db  │   │           Keycloak (realm « ministere »)   │
    │  (données portail) │   │  IdP · SSO · MFA · RBAC · audit auth        │
    └────────────────────┘   │  Fédération LDAP/AD de l'État (option)      │
                             └────────────────────────────────────────────┘
@@ -61,9 +61,12 @@ Statut : **proposition initiale** (à affiner après le cahier des charges).
 - Fédération possible : LDAP/Active Directory du ministère, ou identity brokering vers un IdP national.
 - Événements d'authentification exportés vers la journalisation centralisée.
 
-### 2.5 Base de données — PostgreSQL
-- Une base pour le portail. Keycloak a sa propre base.
-- Chiffrement au repos (au niveau volume/SGBD), sauvegardes chiffrées.
+### 2.5 Base de données — MySQL
+
+- Une base **`portail_db`** dédiée au portail (MySQL 8, conçue avec MySQL Workbench,
+  schéma géré par Flyway). Keycloak a sa propre base. Voir `08-base-de-donnees.md`.
+- Comptes séparés : `portail_app` (CRUD, aucun DDL), `portail_migration` (Flyway).
+- Chiffrement au repos (volume/SGBD), sauvegardes chiffrées. Journal d'audit append-only.
 
 ## 3. Modes d'intégration des applications existantes
 
@@ -80,7 +83,7 @@ Décision par application à trancher dans `04-plan-integration-apps.md`.
 
 | Env | Usage |
 |---|---|
-| `local` | Poste développeur (Docker Compose : Keycloak + PostgreSQL) |
+| `local` | Poste développeur (Docker Compose : Keycloak + MySQL `portail_db`) |
 | `dev` / `recette` | Intégration continue, tests |
 | `préproduction` | Iso-production, tests de charge et sécurité |
 | `production` | Infrastructure de l'État |
@@ -92,6 +95,9 @@ Les décisions structurantes sont consignées sous forme d'ADR courts dans
 
 | # | Décision | Statut |
 |---|---|---|
-| 001 | SSO centralisé via Keycloak (OIDC/SAML) | Proposé |
-| 002 | Pattern BFF avec Spring Cloud Gateway | Proposé |
-| 003 | SPA Angular sans stockage de token côté navigateur | Proposé |
+| 001 | SSO centralisé via Keycloak (OIDC/SAML) | Retenu |
+| 002 | Pattern BFF avec Spring Cloud Gateway | Retenu |
+| 003 | SPA Angular sans stockage de token côté navigateur | Retenu |
+| 004 | Base du portail sur MySQL (`portail_db`), schéma géré par Flyway | Retenu |
+| 005 | Intégration des applications réelles reportée en fin de projet (entrée de catalogue + client Keycloak) | Retenu |
+| 006 | Contrôle d'accès de niveau portail par `PolitiqueAcces` + double validation des applications sensibles | Retenu |

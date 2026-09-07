@@ -1,0 +1,257 @@
+/* =========================================================================
+   Portail Applicatif du Ministère — système de design
+   Palette harmonisée : teal + ambre + encre marine, sur blanc.
+   Beaucoup d'air, beaucoup de mouvement, lisible.
+   ========================================================================= */
+
+:root {
+  /* Fond & surfaces */
+  --bg: #f7f9fb;
+  --surface: #ffffff;
+  --surface-2: #f1f5f8;
+  --surface-3: #e7eef3;
+  --border: #e3eaef;
+  --border-strong: #cdd9e1;
+
+  /* Encre (texte) */
+  --ink: #0f2033;
+  --ink-soft: #55697c;
+  --ink-faint: #90a2b1;
+
+  /* Marque : teal profond */
+  --brand: #0ea5a4;
+  --brand-strong: #0b7c7c;
+  --brand-deep: #075e5e;
+  --brand-050: #e3faf8;
+
+  /* Accent : ambre chaud */
+  --accent: #f59e0b;
+  --accent-strong: #b45309;
+  --accent-050: #fdf1dd;
+
+  /* Sémantique */
+  --ok: #10b981;
+  --ok-050: #d7f6ea;
+  --warn: #f59e0b;
+  --warn-050: #fdf1dd;
+  --danger: #ef4444;
+  --danger-050: #fde3e3;
+  --info: #2563eb;
+  --info-050: #e2ecfe;
+
+  /* Alias conservés (composants existants) → recolorés vers la nouvelle palette */
+  --ink-violet: var(--brand-strong);
+  --ink-blue: var(--brand-strong);
+  --ink-cyan: var(--brand);
+  --ink-green: #047857;
+  --ink-amber: var(--accent-strong);
+  --ink-rose: #b91c1c;
+  --ink-indigo: var(--brand-deep);
+  --violet: var(--brand);
+  --blue: var(--brand);
+  --cyan: var(--brand);
+  --green: var(--ok);
+  --amber: var(--accent);
+  --rose: var(--danger);
+  --indigo: var(--brand-strong);
+
+  /* Dégradés */
+  --grad-hero: linear-gradient(120deg, #0ea5a4 0%, #22c55e 100%);
+  --grad-violet: linear-gradient(135deg, #14b8a6, #0b7c7c);
+  --grad-blue: linear-gradient(135deg, #22d3ee, #0891b2);
+  --grad-green: linear-gradient(135deg, #34d399, #059669);
+  --grad-amber: linear-gradient(135deg, #fbbf24, #d97706);
+  --grad-rose: linear-gradient(135deg, #fb7185, #e11d48);
+
+  /* Rayons & ombres */
+  --r-sm: 9px;
+  --r-md: 15px;
+  --r-lg: 22px;
+  --shadow-sm: 0 1px 2px rgba(15, 32, 51, .05), 0 2px 8px rgba(15, 32, 51, .06);
+  --shadow-md: 0 12px 32px rgba(15, 32, 51, .10);
+  --shadow-lg: 0 30px 70px rgba(11, 124, 124, .18);
+  --ring: 0 0 0 4px rgba(14, 165, 164, .18);
+
+  --hero-bg: linear-gradient(120deg, #e6faf8, #eafaf0 55%, #fef6e7);
+  --illu-bg: linear-gradient(180deg, #fbfdfe, #f3f8fa);
+
+  --font: 'Segoe UI', 'Inter', system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
+  --ease: cubic-bezier(.22, 1, .36, 1);
+}
+
+/* --- Thème sombre --------------------------------------------------------- */
+:root[data-theme="dark"] {
+  --bg: #0b131c;
+  --surface: #121c28;
+  --surface-2: #1a2634;
+  --surface-3: #24313f;
+  --border: #27333f;
+  --border-strong: #38434f;
+
+  --ink: #e8eef3;
+  --ink-soft: #a6b5c3;
+  --ink-faint: #758898;
+
+  --brand: #24c9c6;
+  --brand-strong: #45dad7;
+  --brand-deep: #86e9e6;
+  --brand-050: #0f2f2e;
+
+  --accent: #fbbf24;
+  --accent-strong: #fcd34d;
+  --accent-050: #382b12;
+
+  --ok-050: #12281f;
+  --warn-050: #33280f;
+  --danger-050: #331c1c;
+  --info-050: #16233c;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, .4), 0 2px 8px rgba(0, 0, 0, .35);
+  --shadow-md: 0 12px 32px rgba(0, 0, 0, .5);
+  --shadow-lg: 0 30px 70px rgba(0, 0, 0, .6);
+  --ring: 0 0 0 4px rgba(36, 201, 198, .28);
+
+  --hero-bg: linear-gradient(120deg, #0f2b2a, #12261f 55%, #2a2412);
+  --illu-bg: linear-gradient(180deg, #0f1a24, #131f2b);
+
+  color-scheme: dark;
+}
+:root[data-theme="dark"] input,
+:root[data-theme="dark"] select,
+:root[data-theme="dark"] textarea {
+  background: var(--surface-2);
+  color: var(--ink);
+}
+:root[data-theme="dark"] .badge-slate { color: #9fb0c0; background: #223041; }
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: 15px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: var(--brand-strong); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+h1, h2, h3, h4 { margin: 0 0 .4em; line-height: 1.18; font-weight: 800; letter-spacing: -.02em; color: var(--ink); }
+h1 { font-size: 2rem; }
+h2 { font-size: 1.4rem; }
+h3 { font-size: 1.1rem; }
+p { margin: 0 0 1em; }
+
+/* --- Boutons -------------------------------------------------------------- */
+.btn {
+  position: relative;
+  display: inline-flex; align-items: center; gap: .5rem;
+  padding: .62rem 1.15rem; border-radius: 999px; border: 1px solid transparent;
+  font: inherit; font-weight: 700; cursor: pointer; overflow: hidden;
+  transition: transform .16s var(--ease), box-shadow .16s var(--ease), background .16s var(--ease);
+  white-space: nowrap;
+}
+.btn:hover:not(:disabled) { transform: translateY(-1px); }
+.btn:active:not(:disabled) { transform: translateY(0) scale(.98); }
+.btn:disabled { opacity: .5; cursor: not-allowed; }
+.btn-primary { background: var(--grad-hero); color: #fff; box-shadow: 0 6px 18px rgba(14, 165, 164, .30); }
+.btn-primary:hover:not(:disabled) { box-shadow: 0 12px 28px rgba(14, 165, 164, .42); }
+.btn-violet { background: var(--grad-violet); color: #fff; }
+.btn-green { background: var(--grad-green); color: #fff; }
+.btn-rose { background: linear-gradient(135deg, #f87171, #dc2626); color: #fff; }
+.btn-ghost { background: var(--surface-2); color: var(--ink); border-color: var(--border); }
+.btn-ghost:hover:not(:disabled) { background: var(--surface-3); }
+.btn-sm { padding: .4rem .85rem; font-size: .85rem; }
+
+/* --- Cartes & panneaux ------------------------------------------------- */
+.card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r-lg); box-shadow: var(--shadow-sm);
+}
+.panel {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r-md); padding: 1.25rem 1.5rem;
+}
+
+/* --- Badges de statut ------------------------------------------------- */
+.badge {
+  display: inline-flex; align-items: center; gap: .4rem;
+  padding: .22rem .68rem; border-radius: 999px; font-size: .76rem; font-weight: 800;
+  letter-spacing: .03em; text-transform: uppercase;
+}
+.badge::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: currentColor; box-shadow: 0 0 0 3px color-mix(in srgb, currentColor 18%, transparent); }
+.badge-green  { color: var(--ink-green);  background: var(--ok-050); }
+.badge-blue   { color: var(--brand-strong); background: var(--brand-050); }
+.badge-amber  { color: var(--accent-strong);  background: var(--warn-050); }
+.badge-rose   { color: var(--ink-rose);   background: var(--danger-050); }
+.badge-violet { color: var(--brand-deep); background: var(--brand-050); }
+.badge-slate  { color: #475569;           background: #e2e8f0; }
+.badge-cyan   { color: var(--brand);   background: var(--brand-050); }
+
+/* --- Formulaires -------------------------------------------------------- */
+label { display: block; font-weight: 700; color: var(--brand-deep); margin-bottom: .3rem; font-size: .88rem; }
+input, select, textarea {
+  width: 100%; padding: .62rem .8rem; border: 1px solid var(--border-strong);
+  border-radius: var(--r-sm); font: inherit; color: var(--ink); background: #fff;
+  transition: border-color .14s, box-shadow .14s;
+}
+input:focus, select:focus, textarea:focus { outline: none; border-color: var(--brand); box-shadow: var(--ring); }
+.field { margin-bottom: 1rem; }
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+/* --- Tables ----------------------------------------------------------- */
+table.grid { width: 100%; border-collapse: collapse; font-size: .9rem; }
+table.grid th {
+  text-align: left; padding: .7rem .8rem; color: var(--brand-deep);
+  font-size: .74rem; text-transform: uppercase; letter-spacing: .06em;
+  border-bottom: 2px solid var(--border-strong);
+}
+table.grid td { padding: .7rem .8rem; border-bottom: 1px solid var(--border); }
+table.grid tr { transition: background .12s; }
+table.grid tr:hover td { background: var(--brand-050); }
+
+/* --- Utilitaires ---------------------------------------------------- */
+.container { max-width: 1180px; margin: 0 auto; padding: 0 1.5rem; }
+.stack > * + * { margin-top: 1rem; }
+.muted { color: var(--ink-faint); }
+.mono { font-family: 'Cascadia Code', 'Consolas', ui-monospace, monospace; }
+.chip {
+  display: inline-block; padding: .14rem .52rem; border-radius: 7px;
+  font-size: .78rem; font-weight: 700; background: var(--surface-3); color: var(--ink-soft);
+}
+
+/* --- Mouvement ---------------------------------------------------- */
+@keyframes fade-up { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes pop-in { 0% { opacity: 0; transform: scale(.6); } 60% { transform: scale(1.08); } 100% { opacity: 1; transform: scale(1); } }
+@keyframes shimmer { 100% { background-position: -200% 0; } }
+@keyframes pulse-ring { 0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--brand) 45%, transparent); } 70% { box-shadow: 0 0 0 12px transparent; } 100% { box-shadow: 0 0 0 0 transparent; } }
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+
+/* Transition d'entrée des pages (composant routé) */
+main.container > * { animation: fade-up .38s var(--ease) both; }
+
+.reveal { animation: fade-up .5s var(--ease) both; }
+.stagger > * { animation: fade-up .5s var(--ease) both; animation-delay: calc(var(--i, 0) * 55ms); }
+
+.spinner {
+  width: 34px; height: 34px; border-radius: 50%;
+  border: 4px solid var(--surface-3); border-top-color: var(--brand);
+  animation: spin .8s linear infinite; margin: 2rem auto;
+}
+
+/* Squelettes de chargement */
+.skeleton {
+  background: linear-gradient(100deg, var(--surface-2) 30%, var(--surface-3) 50%, var(--surface-2) 70%);
+  background-size: 200% 100%; animation: shimmer 1.3s linear infinite;
+  border-radius: 10px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
+}

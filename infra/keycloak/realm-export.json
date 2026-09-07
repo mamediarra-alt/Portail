@@ -14,7 +14,8 @@
     "realm": [
       { "name": "AGENT", "description": "Utilisateur final du portail" },
       { "name": "GESTIONNAIRE_HABILITATIONS", "description": "Gère les accès applicatifs" },
-      { "name": "ADMIN_PORTAIL", "description": "Administre le portail" }
+      { "name": "ADMIN_PORTAIL", "description": "Administre le portail" },
+      { "name": "AUDITEUR_PORTAIL", "description": "Consulte le journal d'audit du portail" }
     ]
   },
   "clients": [
@@ -23,6 +24,8 @@
       "name": "Portail BFF",
       "enabled": true,
       "publicClient": false,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "changer-ce-secret",
       "standardFlowEnabled": true,
       "directAccessGrantsEnabled": false,
       "serviceAccountsEnabled": false,
@@ -32,6 +35,44 @@
         "pkce.code.challenge.method": "S256",
         "post.logout.redirect.uris": "http://localhost:8080/*"
       }
+    }
+  ],
+  "users": [
+    {
+      "username": "ministre",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "La",
+      "lastName": "Ministre",
+      "email": "ministre@ministere.gouv",
+      "credentials": [
+        { "type": "password", "value": "Portail-Dev-2026!", "temporary": false }
+      ],
+      "realmRoles": ["AGENT", "ADMIN_PORTAIL"]
+    },
+    {
+      "username": "agent1",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Agent",
+      "lastName": "Un",
+      "email": "agent1@ministere.gouv",
+      "credentials": [
+        { "type": "password", "value": "Portail-Dev-2026!", "temporary": false }
+      ],
+      "realmRoles": ["AGENT"]
+    },
+    {
+      "username": "auditeur1",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Auditeur",
+      "lastName": "Un",
+      "email": "auditeur1@ministere.gouv",
+      "credentials": [
+        { "type": "password", "value": "Portail-Dev-2026!", "temporary": false }
+      ],
+      "realmRoles": ["AGENT", "AUDITEUR_PORTAIL"]
     }
   ]
 }

@@ -1,28 +1,39 @@
-# Frontend — Portail Ministériel
+# Frontend — Portail Applicatif du Ministère
 
-À générer après validation des maquettes et du cahier des charges.
+SPA **Angular 20** (standalone, signals, lazy routes). Aucune donnée métier d'EDUSN ou du
+Restaurant : uniquement l'orchestration (connexion, catalogue, accès, profil, administration,
+audit).
 
-## Pile
+## Démarrer en local
 
-- Angular (dernière LTS), TypeScript strict.
-- Communication avec le BFF uniquement (cookie de session `httpOnly`), jamais de token côté navigateur.
-- Intercepteur HTTP : gestion CSRF, redirection vers login sur 401, corrélation des requêtes.
+```bash
+npm install
+npm start          # http://localhost:4200 — proxie /api, /bff, /oauth2 vers le BFF (:8080)
+```
 
-## Écrans prévus
+Prérequis côté serveur : Keycloak (:8081), `portail-api` (:8082), `portail-bff` (:8080).
+Voir [../docs/09-backend.md](../docs/09-backend.md).
 
-- Connexion (redirection SSO)
-- Tableau de bord / lanceur d'applications
-- Profil utilisateur + préférences
-- Administration des habilitations
-- Journal d'audit (admin)
+## Build
 
-## Génération (à faire)
+```bash
+npm run build      # dist/portail-frontend  (à servir par le BFF en production)
+```
 
-`npx @angular/cli@latest new frontend --routing --style=scss` (Angular CLI via npx,
-pas d'installation globale).
+## Structure
 
-## Qualité
+| Dossier | Rôle |
+|---|---|
+| `core/` | `SessionService`, `ApiService`, `ToastService`, intercepteur 401, guards (`authGuard`, `adminGuard`, `auditeurGuard`), modèles |
+| `layout/` | `Shell` — en-tête, navigation, pied |
+| `shared/` | `WorkflowStepper` (frise de validation des politiques), `ToastHost`, libellés/couleurs |
+| `pages/` | `Login`, `Dashboard`, `AppDetail`, `Profile` |
+| `pages/admin/` | `Admin` + `AdminApplications`, `AdminPolicies`, `AdminCategories`, `AdminDomains`, `AdminConfig`, `AdminAudit` |
 
-- ESLint + règles sécurité, Prettier.
-- `npm audit` en CI.
-- Respect RGAA / WCAG (à confirmer le niveau avec le CDC).
+## Sécurité côté client
+
+- Aucun jeton stocké : le BFF gère la session (cookie `httpOnly`).
+- CSRF : cookie `XSRF-TOKEN` → en-tête `X-XSRF-TOKEN` (support intégré de `HttpClient`).
+- `401` → relance automatique du parcours OIDC (`/oauth2/authorization/keycloak`).
+- Le masquage d'un bouton n'est **pas** une sécurité : chaque appel est revérifié côté serveur.
+- « Accéder » = navigation **pleine page** vers l'URL renvoyée par l'API (jamais une URL saisie).

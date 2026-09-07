@@ -1,0 +1,72 @@
+spring:
+  application:
+    name: portail-api
+
+  datasource:
+    url: ${PORTAIL_DB_URL:jdbc:mysql://localhost:3306/portail_db?useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8&rewriteBatchedStatements=true}
+    username: ${PORTAIL_DB_USER:portail_app}
+    password: ${PORTAIL_DB_PASSWORD:changer_ce_mot_de_passe}
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+      connection-timeout: 5000
+      pool-name: portail-api-pool
+
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate          # Hibernate ne modifie jamais le schéma : Flyway est la référence
+    properties:
+      hibernate.jdbc.time_zone: UTC
+      hibernate.format_sql: false
+
+  flyway:
+    enabled: true
+    url: ${PORTAIL_DB_MIGRATION_URL:jdbc:mysql://localhost:3306/portail_db?useSSL=false&serverTimezone=UTC}
+    user: ${PORTAIL_DB_MIGRATION_USER:portail_migration}
+    password: ${PORTAIL_DB_MIGRATION_PASSWORD:changer_ce_mot_de_passe}
+    locations: classpath:db/migration
+    baseline-on-migrate: false
+    clean-disabled: true
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          # Émetteur des jetons Keycloak (realm « ministere »).
+          issuer-uri: ${PORTAIL_OIDC_ISSUER_URI:http://localhost:8081/realms/ministere}
+
+# Audience attendue dans le jeton (claim aud ou azp). Vide = contrôle ignoré (dev).
+# En production : créer un mapper d'audience « portail-api » dans Keycloak et renseigner ceci.
+portail:
+  oidc:
+    audience: ${PORTAIL_OIDC_AUDIENCE:}
+
+server:
+  port: ${PORTAIL_API_PORT:8082}
+  forward-headers-strategy: framework      # respecte X-Forwarded-* derrière le reverse proxy / BFF
+  error:
+    include-message: never
+    include-stacktrace: never
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      probes:
+        enabled: true
+      show-details: never
+      show-components: never
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+
+logging:
+  level:
+    root: INFO
+    gouv.ministere.portail: INFO
+    AUDIT.SIEM: INFO

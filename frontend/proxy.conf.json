@@ -1,0 +1,7 @@
+{
+  "__comment": "Cible = BFF. En mode démo (profil dev) le BFF écoute sur 8085. Pour le BFF réel (OIDC) sur 8080, changer le port ci-dessous.",
+  "/api": { "target": "http://localhost:8085", "secure": false, "changeOrigin": true },
+  "/bff": { "target": "http://localhost:8085", "secure": false, "changeOrigin": true },
+  "/oauth2": { "target": "http://localhost:8085", "secure": false, "changeOrigin": true },
+  "/login/oauth2": { "target": "http://localhost:8085", "secure": false, "changeOrigin": true }
+}

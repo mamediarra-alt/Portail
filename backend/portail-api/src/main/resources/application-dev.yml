@@ -1,0 +1,31 @@
+# Profil dev : portail-api sans Keycloak, réutilise la base portail_db existante telle quelle.
+# À NE PAS utiliser en production.
+spring:
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.security.oauth2.resource.servlet.OAuth2ResourceServerAutoConfiguration
+  datasource:
+    url: jdbc:mysql://localhost:3306/portail_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC&characterEncoding=UTF-8&rewriteBatchedStatements=true
+    username: portail_app
+    password: MotDePasseApp#2026   # dev local uniquement (voir docs/11-lancer-en-local.md) — jamais en production
+  jpa:
+    hibernate:
+      ddl-auto: none          # on ne valide pas le schéma en dev (colonnes ENUM tolérées)
+    database-platform: org.hibernate.dialect.MySQLDialect
+  flyway:
+    url: jdbc:mysql://localhost:3306/portail_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    user: portail_migration
+    password: MotDePasseMig#2026   # dev local uniquement — jamais en production
+    baseline-on-migrate: true # la base existe déjà : on la marque comme "V2 appliquée"
+    baseline-version: 2
+    locations: classpath:db/migration,classpath:db/migration-dev
+    out-of-order: true
+
+# Autorise la redirection vers des applications lancées en local (http://localhost:*).
+portail:
+  acces:
+    local: true
+
+logging:
+  level:
+    gouv.ministere.portail: DEBUG
